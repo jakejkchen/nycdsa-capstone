@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    Test
+        <br>
+    <form class="teamSelection" method="POST" action="/submitted">  
+       <select class="teamForm" id="teamDropdownSelector" type="text" name="teamDropdown" placeholder="Select A Team">
+            <option disabled selected>Select a matched column</option>
+            {% for x in server_list %}
+            <option value="{{ x }}"{% if loop.first %} SELECTED{% endif %}>{{ x }}</option>
+            {% endfor %}
+       </select>
+       <input class="btn" type="submit" value="submit">
+    </form>
+</body>
+</html>
