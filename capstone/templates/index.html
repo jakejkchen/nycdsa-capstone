@@ -6,8 +6,8 @@
 <body>
     Test
         <br>
-    <form class="teamSelection" method="POST" action="/submitted">  
-       <select class="teamForm" id="teamDropdownSelector" type="text" name="teamDropdown" placeholder="Select A Team">
+    <form class="columnSelection" method="POST" action="/submitted">  
+       <select class="columnForm" id="columnDropdownSelector" type="text" name="columnDropdown" placeholder="Select A Team">
             <option disabled selected>Select a matched column</option>
             {% for x in server_list %}
             <option value="{{ x }}"{% if loop.first %} SELECTED{% endif %}>{{ x }}</option>

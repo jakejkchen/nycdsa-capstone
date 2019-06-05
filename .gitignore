@@ -3,3 +3,4 @@
 __pycache__/
 .DS_Store
 capstone/data/*
+bert_as_a_service/bert_model/*

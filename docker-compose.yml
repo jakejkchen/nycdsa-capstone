@@ -1,0 +1,15 @@
+version: "3"
+services:
+  bert_as_a_service:
+    build: .
+    container_name: bert_as_a_service
+    ports:
+      - 5555:5555
+      - 5556:5556
+  capstone:
+    build: . 
+    command: python app.py
+    depends_on:
+      - bert_as_a_service
+    ports:
+      - 5000:5000
