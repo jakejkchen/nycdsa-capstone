@@ -14,6 +14,9 @@ app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+prosper_df = pd.read_excel('./data/prosperdata/Data-Variable-Definitions.xlsx')
+column_def = {key:val for key, val in zip(prosper_df.Variable.values, prosper_df.Description.values)}
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -60,6 +63,17 @@ def get_match():
 
 	match_result = rankSimilarity(input_str, top_n)
 	return jsonify(match_result)
+
+@app.route("/submitted", methods=["GET", "POST"])
+def hello():
+    if request.method == "GET":
+        return render_template("index.html", server_list=list(column_def)) 
+    #filefullpath = script_dir + '//newTest.csv'
+    input_column_name = request.form["columnDropdown"]
+    match_result = rankSimilarity(column_def[input_column_name])
+    result = pd.DataFrame.from_dict(match_result).T.sort_values('rank').to_html()
+    
+    return result
 
 
 if __name__ == "__main__":
