@@ -1,15 +1,15 @@
-version: "3"
+version: "3.2"
 services:
   bert_as_a_service:
-    build: .
+    build: ./bert_as_a_service
     container_name: bert_as_a_service
-    ports:
-      - 5555:5555
-      - 5556:5556
   capstone:
-    build: . 
-    command: python app.py
+    build: ./capstone 
     depends_on:
       - bert_as_a_service
     ports:
       - 5000:5000
+    volumes:
+      - type: bind
+        source: /Users/admin/Documents/capstone_final/capstone/data
+        target: /app/data

@@ -6,6 +6,7 @@ from call_bert import rankSimilarity
 app = Flask(__name__)
 
 script_dir = path.dirname(path.abspath(__file__))
+pd.set_option('display.max_colwidth', -1)
 prosper_df = pd.read_excel('./data/prosperdata/Data-Variable-Definitions.xlsx')
 column_def = {key:val for key, val in zip(prosper_df.Variable.values, prosper_df.Description.values)}
 

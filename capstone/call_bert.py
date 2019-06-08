@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from bert_serving.client import BertClient
-bc = BertClient(check_length=False)
+bc = BertClient(ip="bert_as_a_service", check_length=False, check_version=False)
 
 lc_dict = pd.read_excel('./data/LC_data/LCDataDictionary.xlsx')
 

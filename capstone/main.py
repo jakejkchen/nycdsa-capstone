@@ -2,6 +2,7 @@ import os
 from flask import Flask, flash, request, redirect, render_template, jsonify
 from werkzeug.utils import secure_filename
 from call_bert import rankSimilarity
+import pandas as pd
 
 
 UPLOAD_FOLDER = './test_uploads'
@@ -13,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+pd.set_option('display.max_colwidth', -1)
 
 prosper_df = pd.read_excel('./data/prosperdata/Data-Variable-Definitions.xlsx')
 column_def = {key:val for key, val in zip(prosper_df.Variable.values, prosper_df.Description.values)}
@@ -77,4 +79,4 @@ def hello():
 
 
 if __name__ == "__main__":
-	app.run()
+	app.run(host='0.0.0.0')
