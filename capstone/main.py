@@ -1,8 +1,11 @@
 import os
+import pandas as pd
 from flask import Flask, flash, request, redirect, render_template, jsonify
 from werkzeug.utils import secure_filename
 from call_bert import rankSimilarity
-import pandas as pd
+from file_preprocess import preprocessing
+from sklearn.externals import joblib
+
 
 
 UPLOAD_FOLDER = './test_uploads'
@@ -19,13 +22,13 @@ pd.set_option('display.max_colwidth', -1)
 prosper_df = pd.read_excel('./data/prosperdata/Data-Variable-Definitions.xlsx')
 column_def = {key:val for key, val in zip(prosper_df.Variable.values, prosper_df.Description.values)}
 
+clf = joblib.load('./data/ml_model/random_forest_600_lending.pkl')
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# @app.route('/')
-# def home():
-# 	return render_template('home.html')
+
 
 @app.route('/about')
 def about():
@@ -54,7 +57,7 @@ def upload_file():
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'test_input_pool.csv'))
 			flash('File(s) successfully uploaded')
 			return redirect('/')
 
@@ -76,6 +79,19 @@ def hello():
     result = pd.DataFrame.from_dict(match_result).T.sort_values('rank').to_html()
     
     return result
+
+@app.route("/dash", methods=["GET"])
+def get_dash():
+
+	return redirect('http://localhost:8050')
+
+@app.route('/predict', methods=["GET", "POST"])
+def predict():
+     test_df = pd.read_csv('./test_uploads/test_input_pool.csv')
+     x_test_df = preprocessing(test_df)
+     prediction = clf.predict(x_test_df)
+
+     return jsonify({'prediction': str(list(prediction))})
 
 
 if __name__ == "__main__":
