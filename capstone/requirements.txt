@@ -5,7 +5,7 @@ attrs==19.1.0
 backcall==0.1.0
 bert-serving-client==1.8.9
 bert-serving-server==1.8.9
-bleach==3.1.0
+bleach==3.1.1
 certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
